@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Telegram Gallery</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Live Telegram uploads</p>
+        <h1>Image Gallery</h1>
+      </div>
+      <button class="icon-button" id="refreshButton" type="button" title="Refresh gallery" aria-label="Refresh gallery">
+        <span aria-hidden="true">Refresh</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="status" id="status">Loading gallery...</section>
+      <section class="gallery" id="gallery" aria-live="polite"></section>
+    </main>
+
+    <dialog class="lightbox" id="lightbox">
+      <button class="close-button" id="closeLightbox" type="button" aria-label="Close preview">Close</button>
+      <img id="lightboxImage" alt="">
+      <div class="lightbox-meta">
+        <h2 id="lightboxCaption"></h2>
+        <p id="lightboxDetails"></p>
+      </div>
+    </dialog>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

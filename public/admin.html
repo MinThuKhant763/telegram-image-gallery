@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery Admin</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/admin.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Gallery controls</p>
+        <h1>Admin</h1>
+      </div>
+      <a class="text-link" href="/">View gallery</a>
+    </header>
+
+    <main>
+      <form class="admin-login" id="tokenForm">
+        <label for="adminToken">Admin token</label>
+        <div class="token-row">
+          <input id="adminToken" name="adminToken" type="password" autocomplete="current-password" placeholder="Paste ADMIN_TOKEN">
+          <button class="icon-button" type="submit">Unlock</button>
+        </div>
+      </form>
+
+      <section class="status" id="adminStatus">Enter your admin token to manage images.</section>
+      <section class="admin-list" id="adminList"></section>
+    </main>
+
+    <script src="/admin.js" type="module"></script>
+  </body>
+</html>
