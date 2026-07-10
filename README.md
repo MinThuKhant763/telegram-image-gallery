@@ -87,3 +87,4 @@ Telegram will now send photo messages to your app.
 This project is Vercel-ready because API routes live in `api/`.
 
 Set the same environment variables in your Vercel project settings, deploy, then set the Telegram webhook to your Vercel URL.
+# telegram-image-gallery
