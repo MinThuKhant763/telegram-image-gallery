@@ -32,6 +32,31 @@ async function findImage(id) {
   return rows[0] || null;
 }
 
+async function removeStorageObject(storagePath) {
+  if (!storagePath) {
+    return;
+  }
+
+  const bucket = getEnv('SUPABASE_BUCKET', 'gallery-images');
+  const encodedPath = storagePath
+    .split('/')
+    .map((part) => encodeURIComponent(part))
+    .join('/');
+
+  try {
+    await supabaseFetch(`/storage/v1/object/${bucket}/${encodedPath}`, {
+      method: 'DELETE'
+    });
+    return;
+  } catch (error) {
+    await supabaseFetch(`/storage/v1/object/${bucket}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prefixes: [storagePath] })
+    });
+  }
+}
+
 async function listImages(req, res) {
   const table = getEnv('SUPABASE_TABLE', DEFAULT_TABLE);
   const response = await supabaseFetch(
@@ -88,12 +113,12 @@ async function deleteImage(req, res) {
   const image = await findImage(id);
   const table = getEnv('SUPABASE_TABLE', DEFAULT_TABLE);
 
-  if (image?.storage_path) {
-    const bucket = getEnv('SUPABASE_BUCKET', 'gallery-images');
-    await supabaseFetch(`/storage/v1/object/${bucket}/${image.storage_path}`, {
-      method: 'DELETE'
-    });
+  if (!image) {
+    json(res, 404, { error: 'Image not found' });
+    return;
   }
+
+  await removeStorageObject(image.storage_path);
 
   await supabaseFetch(`/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`, {
     method: 'DELETE',

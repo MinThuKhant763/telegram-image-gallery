@@ -3,21 +3,28 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Telegram Gallery</title>
+    <title>Our Love Memories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
+    <div class="memory-strip" aria-hidden="true"></div>
     <header class="topbar">
-      <div>
-        <p class="eyebrow">Live Telegram uploads</p>
-        <h1>Image Gallery</h1>
-      </div>
-      <button class="icon-button" id="refreshButton" type="button" title="Refresh gallery" aria-label="Refresh gallery">
-        <span aria-hidden="true">Refresh</span>
-      </button>
+      <a class="wordmark" href="/" aria-label="Our Love Memories home">Our Love Memories</a>
+      <nav class="topbar-actions" aria-label="Site navigation">
+        <a class="text-link" href="/admin.html">Admin</a>
+        <button class="icon-button" id="refreshButton" type="button" title="Refresh memories" aria-label="Refresh memories">Refresh</button>
+      </nav>
     </header>
 
     <main>
+      <section class="intro" aria-labelledby="pageTitle">
+        <h1 id="pageTitle">Every little moment,<br>kept close.</h1>
+        <span class="intro-rule" aria-hidden="true"></span>
+        <p>Our shared collection of places, days, and the moments in between.</p>
+      </section>
       <section class="status" id="status">Loading gallery...</section>
       <section class="gallery" id="gallery" aria-live="polite"></section>
     </main>
@@ -28,6 +35,7 @@
       <div class="lightbox-meta">
         <h2 id="lightboxCaption"></h2>
         <p id="lightboxDetails"></p>
+        <button class="delete-button" id="deleteImageButton" type="button" hidden>Delete image</button>
       </div>
     </dialog>
 

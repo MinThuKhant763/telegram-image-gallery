@@ -74,11 +74,11 @@ function renderImages(images) {
   adminList.replaceChildren();
 
   if (!images.length) {
-    setStatus('No images uploaded yet.', 'empty');
+    setStatus('No memories added yet.', 'empty');
     return;
   }
 
-  setStatus(`${images.length} total ${images.length === 1 ? 'image' : 'images'}`, 'ready');
+  setStatus(`${images.length} ${images.length === 1 ? 'memory' : 'memories'}`, 'ready');
 
   for (const image of images) {
     const row = document.createElement('article');
@@ -86,7 +86,7 @@ function renderImages(images) {
 
     const img = document.createElement('img');
     img.src = image.image_url;
-    img.alt = image.caption || 'Gallery image';
+    img.alt = image.caption || 'Memory photo';
     img.loading = 'lazy';
 
     const fields = document.createElement('div');
