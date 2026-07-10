@@ -37,7 +37,7 @@ async function downloadTelegramFile(filePath) {
 
   return {
     bytes: Buffer.from(await response.arrayBuffer()),
-    contentType: response.headers.get('content-type') || 'image/jpeg'
+    contentType: getImageContentType(filePath, response.headers.get('content-type'))
   };
 }
 
@@ -110,6 +110,30 @@ function getExtension(filePath, contentType) {
   }
 
   return 'jpg';
+}
+
+function getImageContentType(filePath, contentType = '') {
+  const normalized = contentType.toLowerCase();
+
+  if (normalized.startsWith('image/')) {
+    return normalized;
+  }
+
+  const extension = filePath.split('.').pop()?.toLowerCase();
+
+  if (extension === 'png') {
+    return 'image/png';
+  }
+
+  if (extension === 'webp') {
+    return 'image/webp';
+  }
+
+  if (extension === 'gif') {
+    return 'image/gif';
+  }
+
+  return 'image/jpeg';
 }
 
 module.exports = async function handler(req, res) {
