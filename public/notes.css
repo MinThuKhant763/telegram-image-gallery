@@ -119,7 +119,7 @@
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fffdf7;
+  background: var(--editor-panel);
   color: var(--ink);
   box-shadow: var(--shadow);
 }
@@ -150,7 +150,7 @@
 }
 
 .dialog-close:hover,
-.dialog-close:focus-visible { background: #f0e2e5; color: var(--accent); }
+.dialog-close:focus-visible { background: var(--field-bg); color: var(--accent); }
 
 .note-label,
 .token-field span {
@@ -166,7 +166,7 @@
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: white;
+  background: var(--field-bg);
   color: var(--ink);
   font: inherit;
 }
@@ -180,7 +180,7 @@
 
 .note-editor input { min-height: 44px; padding: 0 13px; }
 .note-editor textarea:focus,
-.note-editor input:focus { border-color: var(--accent); outline: 2px solid rgba(158, 57, 76, 0.15); outline-offset: 1px; }
+.note-editor input:focus { border-color: var(--accent); outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 .note-editor-meta {
   display: flex;
@@ -239,6 +239,10 @@
   .notes-grid { grid-template-columns: 1fr; }
   .sticky-note { min-height: 220px; }
   .note-editor form { padding: 22px; }
+}
+
+@media (max-width: 390px) {
+  .add-note-button { width: 32px; height: 32px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

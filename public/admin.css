@@ -24,13 +24,13 @@ input, select {
   min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: var(--panel);
+  background: var(--field-bg);
   color: var(--ink);
   padding: 0 13px;
 }
 
-input::placeholder { color: #aa959d; }
-input:focus, select:focus { border-color: var(--accent); outline: 2px solid rgba(158, 57, 76, 0.15); outline-offset: 1px; }
+input::placeholder { color: var(--placeholder); }
+input:focus, select:focus { border-color: var(--accent); outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 .token-row .icon-button { min-width: 104px; background: var(--accent); color: white; }
 .token-row .icon-button:hover, .token-row .icon-button:focus-visible { background: var(--accent-dark); }
@@ -51,7 +51,7 @@ input:focus, select:focus { border-color: var(--accent); outline: 2px solid rgba
   width: 116px;
   height: 88px;
   border-radius: 6px;
-  background: #eadde0;
+  background: var(--media-bg);
   object-fit: cover;
   grid-row: 1 / span 2;
 }
