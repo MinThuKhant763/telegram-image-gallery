@@ -1,1 +1,62 @@
-m«ëˆ§½©buªàºg§¶››–'?‹^²f•KæÚ±î¸Ø[é¢Šwâ•ê(º×â•æÛ­æ¤n·š‘éÜ¡×¢ëiºÛ©Š{h–)Ş²‡åzx-†{¦×^r‡^uç(uè§¦ëa…éiv+)•¬­†+&zËè¢›­Šznµø¥y×Ÿjém~ŠìµØ§¢‹­¦ëhºÚnµø¥y×Ÿjém~ŠìµÚ.
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notes Â· Our Love Memories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/notes.css">
+  </head>
+  <body>
+    <div class="memory-strip" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="Our Love Memories home">Our Love Memories</a>
+      <nav class="topbar-actions" aria-label="Site navigation">
+        <a class="text-link" href="/">Memories</a>
+        <a class="text-link" href="/admin.html">Admin</a>
+        <button class="add-note-button" id="addNoteButton" type="button" title="Add note" aria-label="Add note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="notes-intro" aria-labelledby="notesTitle">
+        <h1 id="notesTitle">A little note,<br>for later.</h1>
+        <span class="intro-rule" aria-hidden="true"></span>
+        <p>The small thoughts worth keeping close.</p>
+      </section>
+
+      <section class="status" id="notesStatus">Loading notes...</section>
+      <section class="notes-grid" id="notesGrid" aria-live="polite"></section>
+    </main>
+
+    <dialog class="note-editor" id="noteEditor" aria-labelledby="noteEditorTitle">
+      <form id="noteForm">
+        <div class="note-editor-header">
+          <h2 id="noteEditorTitle">Add a note</h2>
+          <button class="dialog-close" id="closeNoteEditor" type="button" aria-label="Close note editor" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+        </div>
+        <label class="note-label" for="noteContent">Your note</label>
+        <textarea id="noteContent" name="content" maxlength="1000" placeholder="Write something to remember..." required></textarea>
+        <div class="note-editor-meta"><span id="noteCharacterCount">0 / 1000</span></div>
+        <label class="token-field" id="noteTokenField" for="noteAdminToken">
+          <span>Admin token</span>
+          <input id="noteAdminToken" name="adminToken" type="password" autocomplete="current-password" placeholder="Paste ADMIN_TOKEN">
+        </label>
+        <p class="note-form-error" id="noteFormError" role="alert"></p>
+        <div class="note-editor-actions">
+          <button class="secondary-button" id="cancelNoteButton" type="button">Cancel</button>
+          <button class="save-note-button" id="saveNoteButton" type="submit">Save note</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/notes.js" type="module"></script>
+  </body>
+</html>
