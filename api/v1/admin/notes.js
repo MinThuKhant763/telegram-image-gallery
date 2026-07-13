@@ -1,11 +1,15 @@
 const { readJsonBody, json } = require('../../_utils');
-const { methodNotAllowed, sendApiError } = require('../_http');
+const { handleCors, methodNotAllowed, sendApiError } = require('../_http');
 const { requireUser, requireRole } = require('../_auth');
 const { requestAsService } = require('../_supabase');
 const { note } = require('../_serializers');
 const { noteContent } = require('./_validation');
 
 module.exports = async function handler(req, res) {
+  if (handleCors(req, res)) {
+    return;
+  }
+
   if (req.method !== 'POST') {
     methodNotAllowed(res);
     return;

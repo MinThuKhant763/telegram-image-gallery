@@ -1,4 +1,4 @@
-const { methodNotAllowed, sendApiError } = require('./_http');
+const { handleCors, methodNotAllowed, sendApiError } = require('./_http');
 const { requireUser } = require('./_auth');
 const { requestAsService } = require('./_supabase');
 const { getLimit, decodeCursor, encodeCursor, addCursorFilter } = require('./_pagination');
@@ -6,6 +6,10 @@ const { note } = require('./_serializers');
 const { json } = require('../_utils');
 
 module.exports = async function handler(req, res) {
+  if (handleCors(req, res)) {
+    return;
+  }
+
   if (req.method !== 'GET') {
     methodNotAllowed(res);
     return;

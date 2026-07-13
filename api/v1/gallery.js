@@ -1,4 +1,4 @@
-const { methodNotAllowed, sendApiError, sendError, ApiError } = require('./_http');
+const { handleCors, methodNotAllowed, sendApiError, sendError, ApiError } = require('./_http');
 const { requireUser } = require('./_auth');
 const { requestAsService } = require('./_supabase');
 const { getLimit, decodeCursor, encodeCursor, addCursorFilter, isUuid } = require('./_pagination');
@@ -53,6 +53,10 @@ async function getGalleryImage(id) {
 }
 
 module.exports = async function handler(req, res) {
+  if (handleCors(req, res)) {
+    return;
+  }
+
   if (req.method !== 'GET') {
     methodNotAllowed(res);
     return;
