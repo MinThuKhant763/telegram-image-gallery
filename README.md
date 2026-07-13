@@ -91,6 +91,21 @@ Telegram will now send photo messages to your app.
 - `GET /api/public-config` returns public Supabase browser config.
 - `POST /api/telegram-webhook` receives Telegram updates.
 
+## Mobile app
+
+`mobile/` contains the Expo Router iOS, Android, and web client. It uses Supabase Auth for individual accounts and the authenticated `/api/v1/*` backend routes; it never receives the Telegram or Supabase server credentials.
+
+Before running it, follow [the mobile migration guide](docs/MOBILE_SETUP.md), then:
+
+```bash
+cd mobile
+cp .env.example .env
+npm install
+npm run start
+```
+
+Run `npm run typecheck` in `mobile/` to validate the TypeScript app. EAS profiles are included in `mobile/eas.json` for development, preview, and production builds.
+
 ## Deployment Notes
 
 This project is Vercel-ready because API routes live in `api/`.
