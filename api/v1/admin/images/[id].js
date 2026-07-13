@@ -1,5 +1,5 @@
 const { readJsonBody, json } = require('../../../_utils');
-const { methodNotAllowed, sendApiError, ApiError } = require('../../_http');
+const { handleCors, methodNotAllowed, sendApiError, ApiError } = require('../../_http');
 const { requireUser, requireRole } = require('../../_auth');
 const { requestAsService } = require('../../_supabase');
 const { isUuid } = require('../../_pagination');
@@ -32,6 +32,10 @@ async function getImage(id) {
 }
 
 module.exports = async function handler(req, res) {
+  if (handleCors(req, res)) {
+    return;
+  }
+
   try {
     const identity = await requireUser(req);
     const id = getId(req);
