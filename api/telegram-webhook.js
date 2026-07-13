@@ -79,9 +79,36 @@ async function insertImageRecord(record) {
   });
 
   if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Supabase insert failed: ${detail}`);
+    const error = new Error(`Supabase insert failed with ${response.status}`);
+    error.status = response.status;
+    throw error;
   }
+}
+
+async function alreadyProcessed(updateId) {
+  if (!Number.isSafeInteger(updateId)) {
+    return false;
+  }
+
+  const table = getEnv('SUPABASE_TABLE', DEFAULT_TABLE);
+  const serviceKey = getSupabaseServiceKey();
+  const url = new URL(`${process.env.SUPABASE_URL}/rest/v1/${table}`);
+  url.searchParams.set('select', 'id');
+  url.searchParams.set('telegram_update_id', `eq.${updateId}`);
+  url.searchParams.set('limit', '1');
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${serviceKey}`,
+      apikey: serviceKey
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase idempotency check failed with ${response.status}`);
+  }
+
+  return (await response.json()).length > 0;
 }
 
 function getLargestPhoto(photos = []) {
@@ -171,18 +198,26 @@ module.exports = async function handler(req, res) {
       return;
     }
 
+    if (await alreadyProcessed(update.update_id)) {
+      json(res, 200, { ok: true, duplicate: true });
+      return;
+    }
+
     const photo = getLargestPhoto(message.photo);
     const file = await telegramApi('getFile', { file_id: photo.file_id });
     const downloaded = await downloadTelegramFile(file.file_path);
     const extension = getExtension(file.file_path, downloaded.contentType);
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const storagePath = `telegram/${senderId || 'unknown'}/${timestamp}-${photo.file_unique_id}.${extension}`;
+    const updatePart = Number.isSafeInteger(update.update_id)
+      ? String(update.update_id)
+      : new Date().toISOString().replace(/[:.]/g, '-');
+    const storagePath = `telegram/${senderId || 'unknown'}/${updatePart}-${photo.file_unique_id}.${extension}`;
     const imageUrl = await uploadToSupabase(storagePath, downloaded.bytes, downloaded.contentType);
 
     await insertImageRecord({
       image_url: imageUrl,
       storage_path: storagePath,
       telegram_file_id: photo.file_id,
+      telegram_update_id: Number.isSafeInteger(update.update_id) ? update.update_id : null,
       caption: message.caption || null,
       sender_id: senderId ? String(senderId) : null,
       sender_name: getSenderName(from),
@@ -191,6 +226,11 @@ module.exports = async function handler(req, res) {
 
     json(res, 200, { ok: true });
   } catch (error) {
+    if (error.status === 409) {
+      json(res, 200, { ok: true, duplicate: true });
+      return;
+    }
+
     console.error(error);
     json(res, 500, { error: error.message });
   }

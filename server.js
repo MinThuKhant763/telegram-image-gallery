@@ -11,8 +11,28 @@ const routes = {
   '/api/admin-images': require('./api/admin-images'),
   '/api/admin-notes': require('./api/admin-notes'),
   '/api/public-config': require('./api/public-config'),
-  '/api/telegram-webhook': require('./api/telegram-webhook')
+  '/api/telegram-webhook': require('./api/telegram-webhook'),
+  '/api/v1/gallery': require('./api/v1/gallery'),
+  '/api/v1/notes': require('./api/v1/notes'),
+  '/api/v1/me': require('./api/v1/me'),
+  '/api/v1/admin/images': require('./api/v1/admin/images'),
+  '/api/v1/admin/notes': require('./api/v1/admin/notes')
 };
+
+const dynamicRoutes = [
+  {
+    pattern: /^\/api\/v1\/gallery\/([^/]+)$/,
+    handler: require('./api/v1/gallery')
+  },
+  {
+    pattern: /^\/api\/v1\/admin\/images\/([^/]+)$/,
+    handler: require('./api/v1/admin/images/[id]')
+  },
+  {
+    pattern: /^\/api\/v1\/admin\/notes\/([^/]+)$/,
+    handler: require('./api/v1/admin/notes/[id]')
+  }
+];
 
 const publicDir = path.join(__dirname, 'public');
 const contentTypes = {
@@ -78,9 +98,15 @@ function serveStatic(req, res, pathname) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
-  const handler = routes[url.pathname];
+  const dynamicRoute = dynamicRoutes.find((route) => route.pattern.test(url.pathname));
+  const handler = routes[url.pathname] || dynamicRoute?.handler;
 
   req.query = Object.fromEntries(url.searchParams.entries());
+
+  if (dynamicRoute) {
+    const match = url.pathname.match(dynamicRoute.pattern);
+    req.query.id = decodeURIComponent(match[1]);
+  }
 
   if (handler) {
     handler(req, res);
