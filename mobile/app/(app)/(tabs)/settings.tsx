@@ -18,7 +18,18 @@ export default function SettingsScreen() {
           <Text style={[styles.email, { color: theme.mutedText }]}>{profile?.email || 'Loading account…'}</Text>
           <Text style={[styles.role, { color: theme.accent }]}>{profile?.role || 'viewer'}</Text>
         </View>
-        {canEdit ? <Pressable onPress={() => router.push('/admin/images')} style={[styles.row, { borderBottomColor: theme.border }]}><Text style={[styles.rowText, { color: theme.text }]}>Manage gallery</Text><Text style={{ color: theme.accent }}>›</Text></Pressable> : null}
+        {canEdit ? (
+          <>
+            <Pressable onPress={() => router.push('/admin/images')} style={[styles.row, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.rowText, { color: theme.text }]}>Manage gallery</Text>
+              <Text style={{ color: theme.accent }}>›</Text>
+            </Pressable>
+            <Pressable onPress={() => router.push('/admin/notes')} style={[styles.row, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.rowText, { color: theme.text }]}>Manage notes</Text>
+              <Text style={{ color: theme.accent }}>›</Text>
+            </Pressable>
+          </>
+        ) : null}
         <View style={[styles.row, { borderBottomColor: theme.border }]}><Text style={[styles.rowText, { color: theme.text }]}>Appearance</Text><Text style={{ color: theme.mutedText }}>System</Text></View>
         {error ? <Text style={[styles.error, { color: theme.danger }]}>{error}</Text> : null}
         <Pressable onPress={() => void refreshProfile()} style={[styles.secondaryButton, { borderColor: theme.border }]}><Text style={{ color: theme.text, fontWeight: '700' }}>Refresh account</Text></Pressable>
