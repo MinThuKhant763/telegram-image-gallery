@@ -12,6 +12,10 @@ export class ApiError extends Error {
   }
 }
 
+function isFormDataBody(body: RequestInit['body']) {
+  return typeof FormData !== 'undefined' && body instanceof FormData;
+}
+
 export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (!baseUrl) {
     throw new Error('Missing EXPO_PUBLIC_API_BASE_URL');
@@ -29,7 +33,7 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}): Promi
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken}`,
-      ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(init.body && !isFormDataBody(init.body) ? { 'Content-Type': 'application/json' } : {}),
       ...(init.headers || {})
     }
   });

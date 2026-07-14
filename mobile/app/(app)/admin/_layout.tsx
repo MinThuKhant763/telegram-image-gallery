@@ -12,6 +12,7 @@ export default function AdminLayout() {
     <Stack screenOptions={{ headerStyle: { backgroundColor: theme.background }, headerTintColor: theme.accent, headerTitleStyle: { color: theme.text, fontWeight: '700' }, contentStyle: { backgroundColor: theme.background } }}>
       <Stack.Screen name="images" options={{ title: 'Manage gallery' }} />
       <Stack.Screen name="image/[id]" options={{ title: 'Edit photo' }} />
+      <Stack.Screen name="create-image" options={{ title: 'Add image', presentation: 'modal' }} />
       <Stack.Screen name="notes" options={{ title: 'Manage notes' }} />
       <Stack.Screen name="create-note" options={{ title: 'New note', presentation: 'modal' }} />
     </Stack>
