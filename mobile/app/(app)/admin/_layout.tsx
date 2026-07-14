@@ -13,6 +13,7 @@ export default function AdminLayout() {
       <Stack.Screen name="images" options={{ title: 'Manage gallery' }} />
       <Stack.Screen name="image/[id]" options={{ title: 'Edit photo' }} />
       <Stack.Screen name="notes" options={{ title: 'Manage notes' }} />
+      <Stack.Screen name="note/[id]" options={{ title: 'Edit note' }} />
       <Stack.Screen name="create-note" options={{ title: 'New note', presentation: 'modal' }} />
     </Stack>
   );
