@@ -15,13 +15,17 @@ function AdminNoteRow({ item }: { item: GalleryNote }) {
   const { profile } = useAuth();
   const remove = useMutation({ mutationFn: () => deleteNote(item.id), onSuccess: () => queryClient.invalidateQueries({ queryKey: notesKey }) });
   const confirmDelete = () => Alert.alert('Delete note?', 'This note will no longer be shown in the gallery.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: () => void remove.mutateAsync() }]);
+  const editNote = () => router.push(`/admin/note/${item.id}`);
 
   return (
     <View style={[styles.row, { borderBottomColor: theme.border }]}>
       <Text style={[styles.content, { color: theme.text }]}>{item.content}</Text>
       <View style={styles.metaRow}>
         <Text style={{ color: theme.mutedText, fontSize: 13 }}>{new Date(item.createdAt).toLocaleDateString()}</Text>
-        {profile?.role === 'admin' ? <Pressable onPress={confirmDelete} hitSlop={10}><Text style={{ color: theme.danger, fontWeight: '700' }}>{remove.isPending ? 'Deleting…' : 'Delete'}</Text></Pressable> : null}
+        <View style={styles.actionRow}>
+          <Pressable onPress={editNote} hitSlop={10}><Text style={{ color: theme.accent, fontWeight: '700' }}>Edit</Text></Pressable>
+          {profile?.role === 'admin' ? <Pressable onPress={confirmDelete} hitSlop={10}><Text style={{ color: theme.danger, fontWeight: '700' }}>{remove.isPending ? 'Deleting…' : 'Delete'}</Text></Pressable> : null}
+        </View>
       </View>
     </View>
   );
@@ -58,5 +62,6 @@ const styles = StyleSheet.create({
   row: { borderBottomWidth: StyleSheet.hairlineWidth, gap: 11, paddingVertical: 18 },
   content: { fontSize: 17, lineHeight: 25 },
   metaRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  actionRow: { alignItems: 'center', flexDirection: 'row', gap: 18 },
   fab: { alignItems: 'center', borderRadius: 999, bottom: 24, flexDirection: 'row', gap: 7, paddingHorizontal: 18, paddingVertical: 14, position: 'absolute', right: 20 }
 });
