@@ -45,7 +45,13 @@
         }
       ],
       "expo-secure-store",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Memories to choose photos for the gallery."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

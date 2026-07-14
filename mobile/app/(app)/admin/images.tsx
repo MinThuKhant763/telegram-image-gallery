@@ -41,7 +41,12 @@ export default function AdminImagesScreen() {
         onRefresh={() => void images.refetch()}
         onEndReached={() => images.hasNextPage && !images.isFetchingNextPage && void images.fetchNextPage()}
         onEndReachedThreshold={0.4}
-        ListHeaderComponent={<Text style={[styles.help, { color: theme.mutedText }]}>Edit captions, visibility, and photo lifecycle.</Text>}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <Text style={[styles.help, { color: theme.mutedText }]}>Edit captions, visibility, and photo lifecycle.</Text>
+            <Pressable onPress={() => router.push('/admin/create-image')} style={({ pressed }) => [styles.addButton, { backgroundColor: theme.accent, opacity: pressed ? 0.8 : 1 }]}><Text style={[styles.addButtonText, { color: theme.background }]}>Add image</Text></Pressable>
+          </View>
+        }
         ListEmptyComponent={<EmptyState title="No images" detail="There are no images to manage." />}
       />
     </Screen>
@@ -50,7 +55,10 @@ export default function AdminImagesScreen() {
 
 const styles = StyleSheet.create({
   list: { padding: 16, paddingBottom: 32 },
-  help: { fontSize: 14, lineHeight: 20, paddingBottom: 9 },
+  header: { gap: 12, paddingBottom: 14 },
+  help: { fontSize: 14, lineHeight: 20 },
+  addButton: { alignItems: 'center', alignSelf: 'flex-start', borderRadius: 999, justifyContent: 'center', minHeight: 42, paddingHorizontal: 18 },
+  addButtonText: { fontSize: 15, fontWeight: '800' },
   row: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 12, minHeight: 86, paddingVertical: 10 },
   thumbnail: { borderRadius: 10, height: 62, width: 62 },
   copy: { flex: 1, gap: 5 },
